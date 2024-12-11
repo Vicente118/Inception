@@ -1,0 +1,72 @@
+services:
+
+  nginx:
+    image: nginx
+    build:
+      context: ./requirements/nginx  # Emplacement du Dockerfile
+    container_name: nginx
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"  # Port https, xxx:xxx == ipv4:ipv6 ? Non Mappe le porte de Conteneur => Machine hote
+    volumes:
+      - volume_wordpress:/var/www/html
+    networks:
+      - intra_network
+    restart: always
+    env_file: .env
+
+  wordpress:  
+    image: wordpress
+    build:
+      context: ./requirements/wordpress
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    ports:
+      - "8010:8010"
+    volumes:
+      - volume_wordpress:/var/www/html
+    networks:
+      - intra_network
+    restart: always
+    env_file: .env
+
+  mariadb:
+    image: mariadb
+    build:
+      context: ./requirements/mariadb
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    volumes:
+      - volume_mariadb:/var/lib/mysql
+    networks:
+      - intra_network
+    restart: always
+    env_file: 
+      - .env
+
+volumes:
+  volume_website:
+    driver: local
+    driver_opts:
+      type: none
+      o:  bind
+      device: ~/data/website
+  volume_wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      o:  bind
+      device: ~/data/wordpress
+  volume_mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      o:  bind
+      device: ~/data/mariadb
+
+networks:
+  intra_network:
+    driver: bridge
