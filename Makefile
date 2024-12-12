@@ -1,13 +1,21 @@
 COMPOSE = srcs/docker-compose.yml
 
-all:
-	docker-compose -f $(COMPOSE) up --build -d
+all: up
 
-clean:
+up:
+	mkdir -p ~/data/wordpress
+	mkdir -p ~/data/mariadb
+	docker-compose -f $(COMPOSE) up --build -d
+	docker ps
+
+prune:
+	docker system prune -af
+
+down:
 	docker-compose -f $(COMPOSE) down -v
 
-fclean: clean
-	rm -rf srcs/requirements/mariadb/db_data srcs/requirements/wordpress/wordpress_data
+fclean: down
+	sudo rm -rf /home/vdarras/data
 
 re: fclean all
 
