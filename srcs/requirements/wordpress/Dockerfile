@@ -16,7 +16,7 @@ COPY ./tools/wp_cli_install.sh /usr/local/bin/wp_cli_install.sh
 
 RUN chmod +x /usr/local/bin/wp_cli_install.sh 
 
-EXPOSE 8010
+EXPOSE 9000
 
 ENTRYPOINT ["/usr/local/bin/wp_cli_install.sh"]
 

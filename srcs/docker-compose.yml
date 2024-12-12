@@ -3,12 +3,12 @@ services:
   nginx:
     image: nginx
     build:
-      context: ./requirements/nginx  # Emplacement du Dockerfile
+      context: ./requirements/nginx  
     container_name: nginx
     depends_on:
       - wordpress
     ports:
-      - "443:443"  # Port https, xxx:xxx == ipv4:ipv6 ? Non Mappe le porte de Conteneur => Machine hote
+      - "443:443" 
     volumes:
       - volume_wordpress:/var/www/html
     networks:
@@ -24,7 +24,7 @@ services:
     depends_on:
       - mariadb
     ports:
-      - "8010:8010"
+      - "9000:9000"
     volumes:
       - volume_wordpress:/var/www/html
     networks:
@@ -48,12 +48,6 @@ services:
       - .env
 
 volumes:
-  volume_website:
-    driver: local
-    driver_opts:
-      type: none
-      o:  bind
-      device: ~/data/website
   volume_wordpress:
     driver: local
     driver_opts:
