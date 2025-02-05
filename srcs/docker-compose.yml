@@ -44,8 +44,7 @@ services:
     networks:
       - intra_network
     restart: always
-    env_file: 
-      - .env
+    env_file: .env
 
 volumes:
   volume_wordpress:
